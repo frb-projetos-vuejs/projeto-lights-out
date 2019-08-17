@@ -1,15 +1,26 @@
 <template>
-    <b-button squared class="light-btn m-1" :variant="toggled ? 'success' : 'secondary'" @click="toggled = !toggled">
-        {{id}}
+    <b-button squared class="light-btn m-1" :variant="getButtonState ? 'success' : 'secondary'" @click="clicked">
+        {{ getUseLabel ? (id + 1) : '' }}
     </b-button>
 </template>
 
 <script>
 export default {
     props: ['id'],
-    data() {
-        return {
-            toggled: false
+    computed: {
+        getButtonState() {
+            return this.$store.getters.getButtonToggle(this.id)
+        },
+        getUseLabel() {
+            return this.$store.getters.getShowLabels
+        },
+        getPlayerName() {
+            return this.$store.getters.getPlayerName
+        }
+    },
+    methods: {
+        clicked() {
+            this.$store.dispatch('buttonOverseer', this.id)
         }
     }
 }

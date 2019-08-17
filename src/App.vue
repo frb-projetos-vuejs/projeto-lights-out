@@ -1,28 +1,67 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <b-container>
+      <b-jumbotron v-if="!started" class="jumbo" header="Lights-out" lead="Escolha de 4 a 10 para definir a quantidade de linhas e colunas do jogo." bg-variant="secondary" text-variant="white" border-variant="dark">
+        <b-row>
+          <b-col sm="12" md="6">
+            <b-form-group label="Digite o seu nome:">
+              <b-input trim :state="nameState" id="input-live" type="text" aria-describedby="input-live-help input-live-feedback" placeholder="Seu nome é..." v-model="playerName"></b-input>
+              <b-form-invalid-feedback id="input-live-feedback">
+                Informe no mínimo 3 letras.
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </b-col>
+          <b-col sm="12" md="6">
+            <b-form-group :label="`O quadro será de tamanho: ${size}x${size}.`">
+              <b-input type="number" min="4" max="10" v-model="size"></b-input>
+            </b-form-group>
+          </b-col>
+        </b-row>
+        <hr>
+        <b-button variant="primary" @click="startGame" :disabled="!nameState">Começar</b-button>
+      </b-jumbotron>
+      <b-jumbotron class="text-center" bg-variant="dark" border-variant="dark" text-variant="white" v-else>
+        <span v-for="n in size*size" :key="n">
+          <light-button :id="n" />
+          <br v-if="n % size === 0" />
+        </span>
+        <hr>
+        <b-button variant="primary" @click="quitGame">Voltar</b-button>
+      </b-jumbotron>
+    </b-container>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import LightButton from './components/LightButton'
 
 export default {
-  name: 'app',
+  data() {
+    return {
+      size: 4,
+      started: false,
+      playerName: ''
+    }
+  },
   components: {
-    HelloWorld
-  }
+    LightButton
+  },
+  computed: {
+      nameState() {
+        return this.playerName.length > 2 ? true : false
+      }
+  },
+  methods: {
+    startGame() {
+
+    },
+    quitGame() {
+
+    }
+  },
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>

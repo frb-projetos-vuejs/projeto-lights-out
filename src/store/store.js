@@ -13,7 +13,8 @@ export default new Vuex.Store({
         presses: 0,
         gameStarted: false,
         time: 0,
-        timer: null
+        timer: null,
+        ranking: []
     },
     getters: {
         getButtonToggle: (state) => (payload) => {
@@ -51,6 +52,9 @@ export default new Vuex.Store({
         },
         getTime(state) {
             return state.time
+        },
+        getRanking(state) {
+            return state.ranking
         }
     },
     mutations: {
@@ -74,11 +78,16 @@ export default new Vuex.Store({
         setPlayerName(state, payload) {
             state.playerName = payload
         },
-        setGameStart(state, payload) {
+        setGameState(state, payload) {
             state.gameStarted = payload
         },
         addPress(state) {
             state.presses++
+        },
+        clearStats(state) {
+            state.buttons = []
+            state.presses = 0
+            state.time = 0
         },
         setTime(state) {
             state.time++
@@ -88,14 +97,24 @@ export default new Vuex.Store({
         },
         stopTimer(state) {
             state.timer.clearInterval()
+        },
+        setRankings(state, payload) {
+            state.ranking = payload
         }
     },
     actions: {
+        loadRanking(context, payload) {
+            context.commit('setRankings', payload)
+        },
         gameStart(context, payload) {
             context.commit('setPlayerName', payload.name)
             context.commit('addButtons', payload.size)
-            context.commit('setGameStart', true)
+            context.commit('setGameState', true)
             /* context.commit('startTimer') */
+        },
+        quitGame(context) {
+            context.commit('setGameState', false)
+            context.commit('clearStats')
         },
         changeShowLabel(context) {
             context.commit('toggleShowLabel')

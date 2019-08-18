@@ -29,12 +29,24 @@
         <b-button variant="info" class="m-1" @click="changeLabelState">Mostrar números</b-button>
         <b-button variant="primary" class="m-1" @click="quitGame">Voltar</b-button>
       </b-jumbotron>
+      <b-jumbotron bg-variant="dark" class="text-center">
+        <div>
+          <b-button v-b-modal.modal-ranking>Ver rankings</b-button>
+
+        </div>
+      </b-jumbotron>
     </b-container>
+
+    <!-- Rankings modal -->
+    <b-modal id="modal-ranking" scrollable title="Ranking" header-bg-variant="dark" header-text-variant="light" footer-bg-variant="dark">
+      <ranking />
+    </b-modal>
   </div>
 </template>
 
 <script>
 import LightButton from './components/LightButton'
+import Ranking from './components/Ranking'
 
 export default {
   data() {
@@ -44,7 +56,8 @@ export default {
     }
   },
   components: {
-    LightButton
+    LightButton,
+    Ranking
   },
   computed: {
       nameState() {
@@ -68,7 +81,9 @@ export default {
       this.$store.dispatch('gameStart', { size: parseInt(this.size), name: this.playerName })
     },
     quitGame() {
-
+      if(confirm("Tem certeza que deseja sair?")) {
+        this.$store.dispatch('quitGame')
+      }
     },
     changeLabelState() {
       this.$store.dispatch('changeShowLabel')

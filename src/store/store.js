@@ -14,7 +14,8 @@ export default new Vuex.Store({
         gameStarted: false,
         time: 0,
         timer: null,
-        ranking: []
+        ranking: [],
+        gameWon: false
     },
     getters: {
         getButtonToggle: (state) => (payload) => {
@@ -55,6 +56,9 @@ export default new Vuex.Store({
         },
         getRanking(state) {
             return state.ranking
+        },
+        getGameWon(state) {
+            return state.gameWon
         }
     },
     mutations: {
@@ -100,9 +104,18 @@ export default new Vuex.Store({
         },
         setRankings(state, payload) {
             state.ranking = payload
+        },
+        pushRanking(state, payload) {
+            state.ranking.push(payload)
+        },
+        setGameWon(state, payload) {
+            state.gameWon = payload
         }
     },
     actions: {
+        addRanking(context, payload) {
+            context.commit('pushRanking', payload)
+        },
         loadRanking(context, payload) {
             context.commit('setRankings', payload)
         },
@@ -166,8 +179,8 @@ export default new Vuex.Store({
                 context.commit('setButtonToggle', id + lines)
                 context.commit('setButtonToggle', id - lines)
             }
-            if(context.getters.getToggledButtons === context.getters.getButtonAmount) {
-                alert('ganhou')
+            if (context.getters.getToggledButtons === context.getters.getButtonAmount) {
+                context.commit('setGameWon', true)
             }
         }
     }

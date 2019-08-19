@@ -19,7 +19,7 @@ class PostService {
     }
 
     Post(data, cb, cbError) {
-        axios.patch(this.fullUrl, data)
+        axios.put(this.fullUrl, data)
         .then(resp => {
             cb(resp)
         })

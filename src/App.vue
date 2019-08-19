@@ -38,8 +38,8 @@
     </b-container>
 
     <!-- Rankings modal -->
-    <b-modal id="modal-ranking" scrollable title="Ranking" header-bg-variant="dark" header-text-variant="light" footer-bg-variant="dark">
-      <ranking />
+    <b-modal centered id="modal-ranking" scrollable title="Ranking" header-bg-variant="dark" header-text-variant="light" footer-bg-variant="dark">
+      <ranking :ranking="getRanking" :msg="getGameWon ? 'Parabéns, você ganhou!' : 'Ranking dos vencedores:'" />
     </b-modal>
   </div>
 </template>
@@ -47,6 +47,7 @@
 <script>
 import LightButton from './components/LightButton'
 import Ranking from './components/Ranking'
+import PostService from './services/PostService'
 
 export default {
   data() {
@@ -74,6 +75,12 @@ export default {
       },
       getPresses(){
         return this.$store.getters.getPresses
+      },
+      getRanking() {
+        return this.$store.getters.getRanking
+      },
+      getGameWon() {
+        return this.$store.getters.getGameWon
       }
   },
   methods: {
@@ -81,12 +88,49 @@ export default {
       this.$store.dispatch('gameStart', { size: parseInt(this.size), name: this.playerName })
     },
     quitGame() {
-      if(confirm("Tem certeza que deseja sair?")) {
+      if (confirm("Tem certeza que deseja sair?")) {
         this.$store.dispatch('quitGame')
       }
     },
     changeLabelState() {
       this.$store.dispatch('changeShowLabel')
+    },
+    collectRankings() {
+      this.ps.Get(this.cbCollectRankings, this.cbCollectRankingsError)
+    },
+    cbCollectRankings(resp) {
+      if (resp.data) {
+        this.$store.dispatch('loadRanking', resp.data)
+      }
+      if (this.getGameWon) {
+        this.$bvModal.show('modal-ranking')
+      }
+    },
+    cbCollectRankingsError(resp) {
+      console.log('Erro ao carregar rankings.')
+      console.log(resp)
+    },
+    updateRanking() {
+      this.ps.Post(this.getRanking, this.cbUpdateRanking, this.cbUpdateRankingError)
+    },
+    cbUpdateRanking(resp) {
+      this.ps.Get(this.cbCollectRankings, this.cbCollectRankingsError)
+    },
+    cbUpdateRankingError(resp) {
+      console.log('Erro ao atualizar rankings.')
+      console.log(resp)
+    }
+  },
+  created() {
+    this.ps = new PostService()
+  },
+  mounted() {
+    this.collectRankings()
+  },
+  watch: {
+    getGameWon() {
+      this.$store.dispatch('addRanking', { presses: this.getPresses, size: this.size, name: this.getPlayerName })
+      this.updateRanking()
     }
   },
 }

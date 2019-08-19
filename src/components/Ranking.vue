@@ -4,7 +4,7 @@
         <h5>{{msg}}</h5>
         <ol>
             <li v-for="(player, index) in ranking" :key="index">
-                {{ player.name }} - {{ player.score }}
+                {{ player.name }} - {{ player.presses }}
             </li>
         </ol>
     </div>

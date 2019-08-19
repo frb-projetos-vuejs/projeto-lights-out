@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import SortUtil from '../services/SortUtil'
 
 Vue.use(Vuex)
+
+var su = new SortUtil()
 
 export default new Vuex.Store({
     state: {
@@ -55,7 +58,7 @@ export default new Vuex.Store({
             return state.time
         },
         getRanking(state) {
-            return state.ranking
+            return state.ranking.slice().sort(su.dynamicSort('presses'))
         },
         getGameWon(state) {
             return state.gameWon

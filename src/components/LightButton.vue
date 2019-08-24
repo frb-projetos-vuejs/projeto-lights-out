@@ -1,5 +1,5 @@
 <template>
-    <b-button squared class="light-btn m-1" :variant="getButtonState ? 'success' : 'secondary'" @click="clicked">
+    <b-button squared class="light-btn m-1" :variant="getButtonState ? 'primary' : 'secondary'" @click="clicked">
         {{ getUseLabel ? (id + 1) : '' }}
     </b-button>
 </template>

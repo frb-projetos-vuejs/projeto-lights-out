@@ -1,7 +1,22 @@
 <template>
-  <div>
+  <div id="div-main" style="z-index: -20;">
+    <vue-particles
+        color="#4169E1"
+        :particleOpacity="0.9"
+        :particlesNumber="140"
+        shapeType="star"
+        :particleSize="7"
+        linesColor="#4169E1"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.7"
+        :linesDistance="150"
+        :moveSpeed="2"
+        :hoverEffect="false"
+        :clickEffect="false"
+      />
     <b-container>
-      <b-jumbotron v-if="!getGameState" class="jumbo" header="Lights-out" lead="Escolha de 4 a 10 para definir a quantidade de linhas e colunas do jogo." bg-variant="secondary" text-variant="white" border-variant="dark">
+      <b-jumbotron class="jumbo-custom" v-if="!getGameState" header="Lights-out" lead="Escolha de 4 a 10 para definir a quantidade de linhas e colunas do jogo." bg-variant="dark" text-variant="white" border-variant="dark">
         <b-row>
           <b-col sm="12" md="6">
             <b-form-group label="Digite o seu nome:">
@@ -16,11 +31,13 @@
               <b-input type="number" min="4" max="10" v-model="size"></b-input>
             </b-form-group>
           </b-col>
+          <b-col col="12" class="text-center">
+          <hr>
+            <b-button variant="primary" @click="startGame" :disabled="!nameState">Iniciar</b-button>
+          </b-col>
         </b-row>
-        <hr>
-        <b-button variant="primary" @click="startGame" :disabled="!nameState">Iniciar</b-button>
       </b-jumbotron>
-      <b-jumbotron class="text-center" :header="`Jogador: ${getPlayerName}`" :lead="'Tempo: Jogadas: ' + getPresses" bg-variant="dark" border-variant="dark" text-variant="white" v-else>
+      <b-jumbotron class="text-center jumbo-custom" :header="`Jogador: ${getPlayerName}`" :lead="'Jogadas: ' + getPresses" bg-variant="dark" border-variant="dark" text-variant="white" v-else>
         <span v-for="button in getButtons" :key="button.id">
           <light-button :id="button.id" />
           <br v-if="(button.id+1) % size === 0" />
@@ -29,7 +46,7 @@
         <b-button variant="info" class="m-1" @click="changeLabelState">Mostrar números</b-button>
         <b-button variant="primary" class="m-1" @click="quitGame">Voltar</b-button>
       </b-jumbotron>
-      <b-jumbotron bg-variant="dark" class="text-center">
+      <b-jumbotron bg-variant="dark" class="text-center jumbo-custom">
         <div>
           <b-button v-b-modal.modal-ranking>Ver rankings</b-button>
 
@@ -38,8 +55,8 @@
     </b-container>
 
     <!-- Rankings modal -->
-    <b-modal centered id="modal-ranking" scrollable title="Ranking" header-bg-variant="dark" header-text-variant="light" footer-bg-variant="dark">
-      <ranking :ranking="getRanking" :msg="getGameWon ? 'Parabéns, você ganhou!' : 'Ranking dos vencedores:'" />
+    <b-modal centered id="modal-ranking" scrollable title="Ranking" header-bg-variant="dark" header-text-variant="light" footer-bg-variant="dark" body-bg-variant="primary" body-text-variant="light" ok-only>
+      <ranking :ranking="getRanking" :msg="getGameWon ? 'Parabéns, você ganhou!' : ''" />
     </b-modal>
   </div>
 </template>
@@ -137,5 +154,37 @@ export default {
 </script>
 
 <style>
+
+@import "assets/custom.css";
+
+#particles-js canvas {
+    display: block;
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+    -webkit-transition: opacity .8s ease, -webkit-transform 1.4s ease;
+    transition: opacity .8s ease, transform 1.4s ease;
+}
+
+#particles-js {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+}
+
+#div-main {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+
+.jumbo-custom {
+  opacity: 0.9;
+  border-radius: 90px !important;
+}
 
 </style>

@@ -3,8 +3,8 @@
         <!-- <b-button>Atualizar</b-button> -->
         <h5>{{msg}}</h5>
         <ol>
-            <li v-for="(player, index) in ranking" :key="index">
-                {{ player.name }} - {{ player.presses }}
+            <li class="score" v-for="(player, index) in ranking" :key="index">
+                Nome: {{ player.name }}<br>Jogadas: {{ player.presses }} | Tamanho: {{ player.size | sizeFilter }}
             </li>
         </ol>
     </div>
@@ -12,10 +12,19 @@
 
 <script>
 export default {
-    props: ['ranking', 'msg']
+    props: ['ranking', 'msg'],
+    filters: {
+        sizeFilter(value) {
+            return value + 'x' + value
+        }
+    }
 }
 </script>
 
 <style>
+
+.score {
+    border: 1px solid white;
+}
 
 </style>

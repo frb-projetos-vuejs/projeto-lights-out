@@ -1,30 +1,34 @@
 <template>
-    <div class="text-center">
-        <!-- <b-button>Atualizar</b-button> -->
-        <h5>{{msg}}</h5>
-        <ol>
-            <li class="score" v-for="(player, index) in ranking" :key="index">
-                Nome: {{ player.name }}<br>Jogadas: {{ player.presses }} | Tamanho: {{ player.size | sizeFilter }}
-            </li>
-        </ol>
+  <b-jumbotron bg-variant="dark" class="text-center jumbo-custom">
+    <div>
+      <b-button v-b-modal.modal-ranking>Ver rankings</b-button>
     </div>
+    <!-- Rankings modal -->
+    <b-modal
+      centered
+      id="modal-ranking"
+      scrollable
+      title="Ranking"
+      header-bg-variant="dark"
+      header-text-variant="light"
+      footer-bg-variant="dark"
+      body-bg-variant="primary"
+      body-text-variant="light"
+      ok-only
+    >
+      <ranking-list :ranking="getRanking" :msg="getGameWon ? 'Parabéns, você ganhou!' : ''"/>
+    </b-modal>
+  </b-jumbotron>
 </template>
 
 <script>
+import RankingList from "./RankingList"
 export default {
-    props: ['ranking', 'msg'],
-    filters: {
-        sizeFilter(value) {
-            return value + 'x' + value
-        }
-    }
+  components: {
+    RankingList
+  }
 }
 </script>
 
 <style>
-
-.score {
-    border: 1px solid white;
-}
-
 </style>

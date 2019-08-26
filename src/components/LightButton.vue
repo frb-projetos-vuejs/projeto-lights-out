@@ -16,9 +16,6 @@ export default {
     },
     getUseLabel() {
       return this.$store.getters.getShowLabels
-    },
-    getPlayerName() {
-      return this.$store.getters.getPlayerName
     }
   },
   methods: {

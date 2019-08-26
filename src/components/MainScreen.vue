@@ -27,7 +27,7 @@
           <b-input type="number" min="4" max="10" v-model="size"></b-input>
         </b-form-group>
       </b-col>
-      <b-col col="12" class="text-center">
+      <b-col cols="12" class="text-center">
         <hr>
         <b-button variant="primary" @click="startGame" :disabled="!nameState">Iniciar</b-button>
       </b-col>
@@ -37,7 +37,25 @@
 
 <script>
 export default {
-  
+  data() {
+    return {
+      size: 4,
+      playerName: ''
+    }
+  },
+  computed: {
+    nameState() {
+      return this.playerName.length > 2 ? true : false
+    }
+  },
+  methods: {
+    startGame() {
+      this.$store.dispatch('gameStart', {
+        size: parseInt(this.size),
+        name: this.playerName
+      })
+    }
+  },
 }
 </script>
 

@@ -126,7 +126,6 @@ export default new Vuex.Store({
             context.commit('setPlayerName', payload.name)
             context.commit('addButtons', payload.size)
             context.commit('setGameState', true)
-            /* context.commit('startTimer') */
         },
         quitGame(context) {
             context.commit('setGameState', false)
